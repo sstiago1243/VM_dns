@@ -1,22 +1,22 @@
 # Configuración de netplan en el servidor FTP
 
-network:
-
-  version: 2
-  
-  ethernets:
-  
-    ens33:
-    
-      dhcp4: true
-      
-      dhcp4-overrides:
-      
-        use-dns: no
+        network:
         
-      nameservers:
-      
-        addresses: [???.???.???.???]
+          version: 2
+          
+          ethernets:
+          
+            ens33:
+            
+              dhcp4: true
+              
+              dhcp4-overrides:
+              
+                use-dns: no
+                
+              nameservers:
+              
+                addresses: [???.???.???.???]
 
 IMPORTANTE: reemplazar ???.???.???.??? por una dirección IP y no borres los corchetes.
 
