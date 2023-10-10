@@ -18,7 +18,7 @@
               
             addresses: [???.???.???.???]
 
-IMPORTANTE: reemplazar ???.???.???.??? por una dirección IP y no borres los corchetes.
+IMPORTANTE: reemplazar ???.???.???.??? por la dirección IP del servidor DNS y no borres los corchetes.
 
 # Configuración previa del servidor DNS
 
@@ -32,7 +32,7 @@ cd ~/
 
 sudo su
 
-IMPORTANTE: La maquina virtual debe ser nueva.
+IMPORTANTE: La maquina virtual debe ser nueva y debe hacer ping con el servidor FTP.
 
 # Copia y Pega los siguentes comandos
 
