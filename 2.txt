@@ -34,26 +34,29 @@ echo "$netplan" > /etc/netplan/00-installer-config.yaml
 netplan apply
 
 
-dns_conf="
+dns_conf1="
 acl corpnets { $network; localhost; };
-options {
-     directory \"/var/cache/bind\";
+options {"
+
+dns_conf2='
+     directory "/var/cache/bind";
 
      allow-query { corpnets; };
 
      dnssec-validation auto;
      listen-on-v6 { any; };
 };
-"
+'
 
-echo "$dns_conf" > /etc/bind/named.conf.options
+echo "$dns_conf1" > /etc/bind/named.conf.options
+echo "$dns_conf2" >> /etc/bind/named.conf.options
 
-file_zona="
-zone \"arc-01.xyz\" {
+file_zona='
+zone "arc-01.xyz" {
     type master;
     file "/var/lib/bind/arc-01.xyz.db";
 };
-"
+'
 
 echo "$file_zona" > /etc/bind/named.conf.local
 
