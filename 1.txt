@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ "$EUID" -ne 0 ]; then
+  echo "Este script debe ejecutarse como root."
+  exit 1
+fi
+
+unlink /etc/resolv.conf
+echo "nameserver $(ip a | grep -oP 'inet \K[\d.]+' | grep -vE '^127\.|^25\.')" > /etc/resolv.conf
+echo "search arc-01.xyz" >> /etc/resolv.conf
+reboot

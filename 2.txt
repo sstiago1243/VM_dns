@@ -1,0 +1,81 @@
+#!/bin/bash
+
+if [ "$EUID" -ne 0 ]; then
+  echo "Este script debe ejecutarse como root."
+  exit 1
+fi
+
+ftp="$1"
+ftp_server="$ftp"
+ip_address=$(ip a | grep -oP 'inet \K[\d.]+' | grep -vE '^127\.|^25\.')
+default_gateway=$(ip route | grep default | awk '{print $3}')
+network=$(ipcalc -n -b "$ip_address" | awk '/Network/ {print $2}')
+
+ufw allow 53/tcp
+ufw allow 53/udp
+
+netplan="
+network:
+  ethernets:
+    ens33:
+      dhcp4: false
+      addresses:
+        - $ip_address/24
+      routes:
+        - to: default
+          via: $default_gateway
+      nameservers:
+        addresses:
+          - 127.0.0.1
+  version: 2
+"
+
+echo "$netplan" > /etc/netplan/00-installer-config.yaml
+netplan apply
+
+
+dns_conf="
+acl corpnets { $network; localhost; };
+options {
+     directory \"/var/cache/bind\";
+
+     allow-query { corpnets; };
+
+     dnssec-validation auto;
+     listen-on-v6 { any; };
+};
+"
+
+echo "$dns_conf" > /etc/bind/named.conf.options
+
+file_zona="
+zone \"arc-01.xyz\" {
+    type master;
+    file "/var/lib/bind/arc-01.xyz.db";
+};
+"
+
+echo "$file_zona" > /etc/bind/named.conf.local
+
+touch /var/lib/bind/arc-01.xyz.db
+chown root:bind /var/lib/bind/arc-01.xyz.db
+chmod 644 /var/lib/bind/arc-01.xyz.db
+
+dns_arc="
+$TTL    3600
+arc-01.xyz.  IN  SOA   ns1.arc-01.xyz.   admin.arc-01.xyz. (
+                           12083
+                           3h
+                           30m
+                           3w
+                           1h
+                           )
+
+arc-01.xyz.  IN  NS    ns1.arc-01.xyz.
+ns1          IN  A     $ip_address
+ftp          IN  A     $ftp_server
+"
+
+echo "$dns_arc" > /var/lib/bind/arc-01.xyz.db
+
+sytemctl restart named
