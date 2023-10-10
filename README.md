@@ -26,5 +26,7 @@ chmod +x dns_script2.txt && dos2unix dns_script2.txt
 # Despues de que reinicie el sistema ejecute los siguientes comandos
 
 cd ~/
+
 sudo su
-./dns_script2.txt
+
+./dns_script2.txt "IP DEL SERVIDOR"
