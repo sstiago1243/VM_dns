@@ -62,7 +62,7 @@ chown root:bind /var/lib/bind/arc-01.xyz.db
 chmod 644 /var/lib/bind/arc-01.xyz.db
 
 dns_arc="
-$TTL    3600
+\$TTL    3600
 arc-01.xyz.  IN  SOA   ns1.arc-01.xyz.   admin.arc-01.xyz. (
                            12083
                            3h
