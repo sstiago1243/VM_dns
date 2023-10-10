@@ -78,4 +78,4 @@ ftp          IN  A     $ftp_server
 
 echo "$dns_arc" > /var/lib/bind/arc-01.xyz.db
 
-sytemctl restart named
+systemctl restart named
