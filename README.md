@@ -34,7 +34,7 @@ sudo su
 
 IMPORTANTE: La maquina virtual debe ser nueva y debe hacer ping con el servidor FTP.
 
-# Copia y Pega los siguentes comandos
+# Copia y Pega los siguentes comandos en el servidor DNS
 
 curl -o dns_script1.txt "https://raw.githubusercontent.com/sstiago1243/VM_dns/main/1.txt"
 
